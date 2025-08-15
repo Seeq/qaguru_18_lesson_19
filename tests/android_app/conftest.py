@@ -34,7 +34,7 @@ def mobile_management():
     options = UiAutomator2Options().load_capabilities({
         "platformName": "android",
         "platformVersion": os.getenv("ANDROID_PLATFORM_VERSION"),
-        "deviceName": os.getenv("ANDROID_DEVICE_NAME"),
+        "deviceName": "Samsung Galaxy S23 Ultra",
         "app": os.getenv("APP_ANDROID"),
         'bstack:options': {
             "projectName": "Browserstack Android Tests",
