@@ -4,12 +4,13 @@ import allure_commons
 from appium.options.android import UiAutomator2Options
 from selene import browser, support
 import os
-
-import config
+from dotenv import load_dotenv
 from selene_in_action import utils
-
 from appium import webdriver
 
+@pytest.fixture(scope='function', autouse=True)
+def load_env():
+    load_dotenv()
 
 @pytest.fixture(scope='function', autouse=True)
 def mobile_management():
@@ -29,8 +30,8 @@ def mobile_management():
             'sessionName': 'BStack first_test',
 
             # Set your access credentials
-            'userName': config.bstack_userName,
-            'accessKey': config.bstack_accessKey,
+            'userName': "serg_6TkIZu",
+            'accessKey': "qv4bexc8DqzCH989uTJg",
         }
     })
 
