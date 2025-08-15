@@ -1,5 +1,5 @@
-from selene import have, browser
 from allure import step
+from selene import have, browser
 
 
 def test_search():

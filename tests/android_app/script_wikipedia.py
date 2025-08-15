@@ -1,9 +1,10 @@
+import time
+
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as have
-import time
+from selenium.webdriver.support.ui import WebDriverWait
 
 options = UiAutomator2Options().load_capabilities({
     # Specify device and os_version for testing

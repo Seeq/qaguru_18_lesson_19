@@ -1,15 +1,18 @@
-import allure
-import pytest
-import allure_commons
-from appium.options.android import UiAutomator2Options
-from selene import browser, support
 import os
-from dotenv import load_dotenv
+
+import allure
+import allure_commons
+import pytest
 from appium import webdriver
+from appium.options.android import UiAutomator2Options
+from dotenv import load_dotenv
+from selene import browser, support
+
 
 @pytest.fixture(scope='function', autouse=True)
 def load_env():
     load_dotenv()
+
 
 def attach_bstack_video(session_id):
     import requests
@@ -28,6 +31,7 @@ def attach_bstack_video(session_id):
         name='Screencast',
         attachment_type=allure.attachment_type.HTML,
     )
+
 
 @pytest.fixture(scope='function', autouse=True)
 def mobile_management():
@@ -77,5 +81,3 @@ def mobile_management():
     session_id = browser.driver.session_id
     browser.quit()
     attach_bstack_video(session_id)
-
-

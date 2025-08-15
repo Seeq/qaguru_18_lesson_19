@@ -1,6 +1,7 @@
+import os
+
 import pytest
 from selene import browser
-import os
 
 
 @pytest.fixture(scope='function', autouse=True)
@@ -14,7 +15,7 @@ def browser_management():
     # chrome_options.add_argument('--headless')
     # browser.config.driver_options = chrome_options
     browser.config.hold_driver_at_exit = (
-        os.getenv('hold_driver_at_exit', 'false').lower() == 'true'
+            os.getenv('hold_driver_at_exit', 'false').lower() == 'true'
     )
     browser.config.window_width = os.getenv('window_width', '1024')
     browser.config.window_height = os.getenv('window_height', '768')
