@@ -25,7 +25,7 @@ def attach_bstack_video(session_id):
         f'<source src="{video_url}" type="video/mp4">'
         '</video>'
         '</body></html>',
-        name='Видео теста',
+        name='Screencast',
         attachment_type=allure.attachment_type.HTML,
     )
 
