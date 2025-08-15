@@ -5,33 +5,43 @@ from appium.options.android import UiAutomator2Options
 from selene import browser, support
 import os
 from dotenv import load_dotenv
-from selene_in_action import utils
 from appium import webdriver
 
 @pytest.fixture(scope='function', autouse=True)
 def load_env():
     load_dotenv()
 
+def attach_bstack_video(session_id):
+    import requests
+    bstack_session = requests.get(
+        f'https://api.browserstack.com/app-automate/sessions/{session_id}.json',
+        auth=(os.getenv("BS_USERNAME"), os.getenv("BS_KEY")),
+    ).json()
+    video_url = bstack_session['automation_session']['video_url']
+
+    allure.attach(
+        '<html><body>'
+        '<video width="100%" height="100%" controls autoplay>'
+        f'<source src="{video_url}" type="video/mp4">'
+        '</video>'
+        '</body></html>',
+        name='Видео теста',
+        attachment_type=allure.attachment_type.HTML,
+    )
+
 @pytest.fixture(scope='function', autouse=True)
 def mobile_management():
     options = UiAutomator2Options().load_capabilities({
-        # Specify device and os_version for testing
-        # 'platformName': 'android',
-        'platformVersion': '9.0',
-        'deviceName': 'Google Pixel 3',
-
-        # Set URL of the application under test
-        'app': 'bs://sample.app',
-
-        # Set other BrowserStack capabilities
+        "platformName": "android",
+        "platformVersion": os.getenv("ANDROID_PLATFORM_VERSION"),
+        "deviceName": os.getenv("ANDROID_DEVICE_NAME"),
+        "app": os.getenv("APP_ANDROID"),
         'bstack:options': {
-            'projectName': 'First Python project',
-            'buildName': 'browserstack-build-1',
-            'sessionName': 'BStack first_test',
-
-            # Set your access credentials
-            'userName': "serg_6TkIZu",
-            'accessKey': "qv4bexc8DqzCH989uTJg",
+            "projectName": "Browserstack Android Tests",
+            "buildName": "Browserstack-build-1",
+            "sessionName": "Search Test",
+            "userName": os.getenv("BS_USERNAME"),
+            "accessKey": os.getenv("BS_KEY")
         }
     })
 
@@ -54,21 +64,18 @@ def mobile_management():
 
     allure.attach(
         browser.driver.get_screenshot_as_png(),
-        name='screenshot',
+        name='Screenshot',
         attachment_type=allure.attachment_type.PNG,
     )
 
     allure.attach(
         browser.driver.page_source,
-        name='screen xml dump',
+        name='XML screen structure',
         attachment_type=allure.attachment_type.XML,
     )
 
     session_id = browser.driver.session_id
-
-    with allure.step('tear down app session'):
-        browser.quit()
-
-    utils.allure.attach_bstack_video(session_id)
+    browser.quit()
+    attach_bstack_video(session_id)
 
 
